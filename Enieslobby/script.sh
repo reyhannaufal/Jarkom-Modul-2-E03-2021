@@ -15,22 +15,21 @@ $conf_name = "
 //include "/etc/bind/zones.rfc1918";
 
 
-zone "franky.e01.com" {
+zone "franky.E03.com" {
     type master;
-    file "/etc/bind/kaizoku/franky.e01.com";
-    allow-transfer { 192.200.2.3; }; // Masukan IP Water7 tanpa tanda petik
-    // bikin jadi slave
-    also-notify { 192.200.2.3; };
+    file "/etc/bind/kaizoku/franky.E03.com";
+    allow-transfer { 192.201.2.3; };
+    also-notify { 192.201.2.3; };
     notify yes;
 };
 
-zone "2.200.192.in-addr.arpa" {
+zone "2.201.192.in-addr.arpa" {
     type master;
-    file "/etc/bind/kaizoku/2.200.192.in-addr.arpa";
+    file "/etc/bind/kaizoku/2.201.192.in-addr.arpa";
 };
 "
 
-$name >> /etc/bind/kaizoku/franky.E03.com
+$conf_name >> /etc/bind/kaizoku/franky.E03.com
 
 service bind9 restart
 
