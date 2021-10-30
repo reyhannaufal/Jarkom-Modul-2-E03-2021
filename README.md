@@ -6,9 +6,71 @@ Daftar Kelompok:
 
 ## Soal dan Pembahasan
 1. EniesLobby akan dijadikan sebagai DNS Master, Water7 akan dijadikan DNS Slave, dan Skypie akan digunakan sebagai Web Server. Terdapat 2 Client yaitu Loguetown, dan Alabasta. Semua node terhubung pada router Foosha, sehingga dapat mengakses internet
+
+  Dibuat topologi sebagai berikut
+  ![image](https://user-images.githubusercontent.com/73778173/139527903-a3fe9724-5f2c-4cb1-8823-059e861aa303.png)
+  
+  dengan konfigurasi dari masing-masing node sebagai berikut
+  
+  Foosha
   ```
-  base
+  auto eth0
+iface eth0 inet dhcp
+
+auto eth1
+iface eth1 inet static
+	address 192.201.1.1
+	netmask 255.255.255.0
+
+auto eth2
+iface eth2 inet static
+	address 192.201.2.1
+	netmask 255.255.255.0
+
   ```
+  Loguetown
+  ```
+  auto eth0
+iface eth0 inet static
+	address 192.201.1.2
+	netmask 255.255.255.0
+	gateway 192.201.1.1
+  ```
+  Alabasta
+  ```
+  auto eth0
+iface eth0 inet static
+	address 192.201.1.3
+	netmask 255.255.255.0
+	gateway 192.201.1.1
+
+  ```
+  EniesLobby
+  ```
+  auto eth0
+iface eth0 inet static
+	address 192.201.2.2
+	netmask 255.255.255.0
+	gateway 192.201.2.1
+  ```
+  Water7
+  ```
+  auto eth0
+iface eth0 inet static
+	address 192.201.2.3
+	netmask 255.255.255.0
+	gateway 192.201.2.1
+
+  ```
+  Skypie
+  ```
+  auto eth0
+iface eth0 inet static
+	address 192.201.2.4
+	netmask 255.255.255.0
+	gateway 192.201.2.1
+  ```
+
 2. Luffy ingin menghubungi Franky yang berada di EniesLobby dengan denden mushi. Kalian diminta Luffy untuk membuat website utama dengan mengakses franky.yyy.com dengan alias www.franky.yyy.com pada folder kaizoku
   ```
   base
