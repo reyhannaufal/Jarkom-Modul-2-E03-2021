@@ -243,12 +243,12 @@ Daftar Kelompok:
 10. Setelah itu, pada subdomain www.super.franky.yyy.com, Luffy membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/super.franky.yyy.com
     Pertama masuk ke folder `/var/www`. Buat folder baru yaitu `super.franky.E03.com` yang berisikan hasil extract dari super.franky.zip yang sudah di git clone sebelumnya. Lalu buat file konfigurasi baru dengan cara melakukan copy pada file `000-default.conf` menjadi `super.franky.E03.com.conf` yang berisikan
 
-```
-      ServerAdmin webmaster@localhost
-      DocumentRoot /var/www/super.franky.E03.com
-      ServerName super.franky.E03.com
-      ServerAlias www.super.franky.E03.com
-```
+	```
+	      ServerAdmin webmaster@localhost
+	      DocumentRoot /var/www/super.franky.E03.com
+	      ServerName super.franky.E03.com
+	      ServerAlias www.super.franky.E03.com
+	```
 
     Setelah itu aktifkan konfigurasi tersebut dengan cara `a2ensite super.franky.E03.com.conf` dan lakukan `service apache2 restart`. Lalu lakukan `lynx www.super.franky.E03com` pada salah satu client.
 
@@ -257,11 +257,11 @@ Daftar Kelompok:
 11. Akan tetapi, pada folder /public, Luffy ingin hanya dapat melakukan directory listing saja.
     Edit file `super.franky.E03.com.conf` yang terletak di `/etc/apache2/sites-available` dengan menambahkan
 
-```
-      <Directory /var/www/super.franky.E03.com/public>
-              Options +Indexes
-      </Directory>
-```
+	```
+	      <Directory /var/www/super.franky.E03.com/public>
+		      Options +Indexes
+	      </Directory>
+	```
 
     Lakukan `service apache2 restart`. Lalu buka `www.super.franky.E03.com` pada salah satu client.
 
@@ -269,12 +269,12 @@ Daftar Kelompok:
 
 12.Tidak hanya itu, Luffy juga menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache .
 
-    Edit file `super.franky.E03.com.conf` di folder `etc/apache2/sites-available` dengan menambahkan beberapa code seperti berikut
+   Edit file `super.franky.E03.com.conf` di folder `etc/apache2/sites-available` dengan menambahkan beberapa code seperti berikut
 
-```
-      ErrorDocument 404 /error/404.html
-```
-Lakukan `service apache2 restart`. Lalu buka `www.super.franky.E03.com/c` pada salah satu client.
+	```
+	      ErrorDocument 404 /error/404.html
+	```
+   Lakukan `service apache2 restart`. Lalu buka `www.super.franky.E03.com/c` pada salah satu client.
 
 ![image](https://user-images.githubusercontent.com/54606856/139535623-df18afae-3bbc-4860-8be7-f3297d264f63.png)
 
