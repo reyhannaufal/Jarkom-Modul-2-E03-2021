@@ -61,19 +61,37 @@ Daftar Kelompok:
   ```
 14. Dan Luffy meminta untuk web www.general.mecha.franky.yyy.com hanya bisa diakses dengan port 15000 dan port 15500
   ```
-  base
+  Listen 80
+  Listen 15000
+  Listen 15500
+  
+  <IfModule ssl_module>
+    Listen 443
+  <IfModule>
+  
+  <IfModule mod_gnutls.c>
+    Listen 443
+  <IfModule>
   ```
+![image](https://user-images.githubusercontent.com/59334824/139519281-9a87e428-6aea-4c7a-9fe3-90a279f9f2dc.png)
+
 15. dengan autentikasi username luffy dan password onepiece dan file di /var/www/general.mecha.franky.yyy
-  ```
-  base
-  ```
-16. Dan setiap kali mengakses IP Skypie akan dialihkan secara otomatis ke www.franky.yyy.com 
-  ```
-  base
-  ```
+ ```
+  luffy:$2y$10$mePXsiF4FlxFbLAXj7h1Bu2bJbOcuZhypOIQbA/ZEGspby6EznL0G
+ ```
+![image](https://user-images.githubusercontent.com/59334824/139519289-e21358b4-51a5-420b-ad9b-f9a8a0902d12.png)
+![image](https://user-images.githubusercontent.com/59334824/139519300-98e37dfa-2d0d-4600-beb9-71f66678e872.png)
+
+16. Dan setiap kali mengakses IP Skypie akan dialihkan secara otomatis ke www.franky.yyy.com
+ ![messageImage_1635565295845](https://user-images.githubusercontent.com/59334824/139519256-5b255200-c716-43a5-816d-e9d6cda99d30.jpg)
+ ![image](https://user-images.githubusercontent.com/59334824/139519263-0332a5c7-4dfd-4f2d-8daa-f34743e4e029.png)
+
 17. Dikarenakan Franky juga ingin mengajak temannya untuk dapat menghubunginya melalui website www.super.franky.yyy.com, dan dikarenakan pengunjung web server pasti akan bingung dengan randomnya images yang ada, maka Franky juga meminta untuk mengganti request gambar yang memiliki substring “franky” akan diarahkan menuju franky.png. Maka bantulah Luffy untuk membuat konfigurasi dns dan web server ini!
-
-
   ```
-  base
+  RewriteEngine On
+  RewriteBase /var/www/super.franky.E03.com/public/images/
+  RewriteCond %{ REQUEST_FILENAME} !franky.png
+  RewriteRule (.*)franky(.*) http://super.franky.E03.com/public/images/franky.png
   ```
+![image](https://user-images.githubusercontent.com/59334824/139519238-824d9abc-bd44-44b1-8f0b-faf853b7b43b.png)
+![messageImage_1635565436495](https://user-images.githubusercontent.com/59334824/139519243-7cfdba72-c2d3-47f6-824b-2293e9b42958.jpg)
