@@ -104,6 +104,11 @@ Daftar Kelompok:
 	Kemudian setting nameserver pada client mengarah ke EniesLobby
 	
 	![image](https://user-images.githubusercontent.com/73778173/139528912-9cb3eaf1-1ee7-4a84-9a08-637499e7fd6b.png)
+	
+	Hasil ping dari `franky.E03.com`
+	
+	![image](https://user-images.githubusercontent.com/59334824/139539911-b1ff8089-fabb-426e-a197-35fd215d4abc.png)
+
 
 3. Setelah itu buat subdomain super.franky.yyy.com dengan alias www.super.franky.yyy.com yang diatur DNS nya di EniesLobby dan mengarah ke Skypie
 
@@ -115,6 +120,7 @@ Daftar Kelompok:
 	Setelah melakukan restart bind maka dilakukan ping dan akan didapatkan hasil sebagai berikut
 
 	![image](https://user-images.githubusercontent.com/59334824/139539240-ab7f86a8-e323-40e7-9e48-0eb31e5a54fc.png)
+	
 
 
 
@@ -158,10 +164,14 @@ Daftar Kelompok:
 	};
 	```
 	Kemudian pada file `/etc/resolv.conf` arahkan ip ke Water7 dan EniesLobby seperti berikut
+	
 	![image](https://user-images.githubusercontent.com/73778173/139537183-bed5364a-0028-45f8-ab92-4a5dce142759.png)
+	
+	Lakukan `service apache2 stop` pada enieslobby, untuk memastikan bahwa slave berfungsi dengan benar. Berikut merupakan hasil ping menggunakan slave
+	
+	![image](https://user-images.githubusercontent.com/59334824/139539911-b1ff8089-fabb-426e-a197-35fd215d4abc.png)
 
-
-6. EniesLobby rusak, maka buat Water7 sebagai DNS Slave untuk domain utama (5). Setelah itu terdapat subdomain mecha.franky.yyy.com dengan alias www.mecha.franky.yyy.com yang didelegasikan dari EniesLobby ke Water7 dengan IP menuju ke Skypie dalam folder sunnygo
+6.  Setelah itu terdapat subdomain mecha.franky.yyy.com dengan alias www.mecha.franky.yyy.com yang didelegasikan dari EniesLobby ke Water7 dengan IP menuju ke Skypie dalam folder sunnygo
 
 	Lakukan konfigurasi berikut pada file `/etc/bind/kaizoku/franky.E03.com` di EniesLobby
 	
