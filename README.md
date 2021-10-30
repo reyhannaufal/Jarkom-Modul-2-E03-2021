@@ -180,9 +180,17 @@ Lalu jika dilakukan ping pada Loguetown akan didapatkan hasil berikut
 
 8. Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.franky.yyy.com. Pertama, luffy membutuhkan webserver dengan DocumentRoot pada /var/www/franky.yyy.com.
 
-```
-base
-```
+Pertama copy dari `/etc/apache2/sites-available/000-default.conf` ke file baru `/etc/apache2/sites-available/franky.e03.com` di skypie
+
+Kemudian lakukan konfigurasi pada file `franky.e03.com` sebagai berikut
+![image](https://user-images.githubusercontent.com/73778173/139538658-d5c1e8ef-e181-4a7d-8c6a-a28e877a42f6.png)
+
+kemudian aktifkan konfigurasi franky.e03.com dengan `a2ensite franky.e03.com`, lalu restart apache
+
+kemudian download file dari `https://github.com/FeinardSlim/Praktikum-Modul-2-Jarkom/raw/main/franky.zip` dan dimasukkan ke folder `/var/www` lalu unzip filenya dan rename folder yang sudah di unzip dari `franky.e03.com`
+
+
+
 
 9. Setelah itu, Luffy juga membutuhkan agar url www.franky.yyy.com/index.php/home dapat menjadi menjadi www.franky.yyy.com/home.
 
