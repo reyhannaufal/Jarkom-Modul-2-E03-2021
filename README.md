@@ -150,11 +150,17 @@ Lakukan `service apache2 restart` pada skypie. Setelah itu buka `www.franky.E03.
 
 10. Setelah itu, pada subdomain www.super.franky.yyy.com, Luffy membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/super.franky.yyy.com
 
+Pertama masuk ke folder `/var/www`. Buat folder baru yaitu `super.franky.E03.com` yang berisikan hasil extract dari super.franky.zip yang sudah di git clone sebelumnya. Lalu buat file konfigurasi baru dengan cara melakukan copy pada file `000-default.conf` menjadi `super.franky.E03.com.conf` yang berisikan
+
 ```
-base
+      ServerAdmin webmaster@localhost
+      DocumentRoot /var/www/super.franky.E03.com
+      ServerName super.franky.E03.com
+      ServerAlias www.super.franky.E03.com
 ```
 
-11. Akan tetapi, pada folder /public, Luffy ingin hanya dapat melakukan directory listing saja.
+Setelah itu aktifkan konfigurasi tersebut dengan cara `a2ensite super.franky.E03.com.conf` dan lakukan `service apache2 restart`. Lalu lakukan `lynx www.super.franky.E03com`.
+![image](https://user-images.githubusercontent.com/54606856/139534589-e20f3491-a2ae-4a92-8735-adacef2889ad.png) 11. Akan tetapi, pada folder /public, Luffy ingin hanya dapat melakukan directory listing saja.
 
 ```
 base
