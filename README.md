@@ -72,9 +72,21 @@ iface eth0 inet static
   ```
 
 2. Luffy ingin menghubungi Franky yang berada di EniesLobby dengan denden mushi. Kalian diminta Luffy untuk membuat website utama dengan mengakses franky.yyy.com dengan alias www.franky.yyy.com pada folder kaizoku
+
+Pertama untuk konfigurasi di node EniesLobby sebagai berikut
   ```
-  base
+  zone "franky.e03.com" {
+        type master;
+        file "/etc/bind/kaizoku/franky.e03.com";
+};
   ```
+  
+  lalu melakukan konfigurasi pada file `franky.e03.com` dengan konfigurasi sebagai berikut
+  ![image](https://user-images.githubusercontent.com/73778173/139528843-099dbe03-6b71-4718-9128-173a865c01e2.png)
+
+  Kemudian setting nameserver pada client mengarah ke EniesLobby
+  ![image](https://user-images.githubusercontent.com/73778173/139528912-9cb3eaf1-1ee7-4a84-9a08-637499e7fd6b.png)
+
 3. Setelah itu buat subdomain super.franky.yyy.com dengan alias www.super.franky.yyy.com yang diatur DNS nya di EniesLobby dan mengarah ke Skypie
   ```
   base
