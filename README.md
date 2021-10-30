@@ -142,15 +142,14 @@ base
 
    Pertama aktifkan module rewrite dengan cara `a2enmod rewrite`. Setelah itu, edit file `franky.E03.com.conf` pada folder `/etc/apache2/sites-available` seperti berikut
 
-![image](https://user-images.githubusercontent.com/54606856/139532114-4a763d2e-3a09-4af8-8fb8-24855392e433.png)
+   ![image](https://user-images.githubusercontent.com/54606856/139532114-4a763d2e-3a09-4af8-8fb8-24855392e433.png)
 
-Lakukan `service apache2 restart` pada skypie. Setelah itu buka `www.franky.E03.com/home` pada salah satu client.
+   Lakukan `service apache2 restart` pada skypie. Setelah itu buka `www.franky.E03.com/home` pada salah satu client.
 
-![image](https://user-images.githubusercontent.com/54606856/139532186-c7769f59-22a2-4703-a471-176d656aacf3.png)
+   ![image](https://user-images.githubusercontent.com/54606856/139532186-c7769f59-22a2-4703-a471-176d656aacf3.png)
 
 10. Setelah itu, pada subdomain www.super.franky.yyy.com, Luffy membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/super.franky.yyy.com
-
-Pertama masuk ke folder `/var/www`. Buat folder baru yaitu `super.franky.E03.com` yang berisikan hasil extract dari super.franky.zip yang sudah di git clone sebelumnya. Lalu buat file konfigurasi baru dengan cara melakukan copy pada file `000-default.conf` menjadi `super.franky.E03.com.conf` yang berisikan
+    Pertama masuk ke folder `/var/www`. Buat folder baru yaitu `super.franky.E03.com` yang berisikan hasil extract dari super.franky.zip yang sudah di git clone sebelumnya. Lalu buat file konfigurasi baru dengan cara melakukan copy pada file `000-default.conf` menjadi `super.franky.E03.com.conf` yang berisikan
 
 ```
       ServerAdmin webmaster@localhost
@@ -159,12 +158,22 @@ Pertama masuk ke folder `/var/www`. Buat folder baru yaitu `super.franky.E03.com
       ServerAlias www.super.franky.E03.com
 ```
 
-Setelah itu aktifkan konfigurasi tersebut dengan cara `a2ensite super.franky.E03.com.conf` dan lakukan `service apache2 restart`. Lalu lakukan `lynx www.super.franky.E03com`.
-![image](https://user-images.githubusercontent.com/54606856/139534589-e20f3491-a2ae-4a92-8735-adacef2889ad.png) 11. Akan tetapi, pada folder /public, Luffy ingin hanya dapat melakukan directory listing saja.
+    Setelah itu aktifkan konfigurasi tersebut dengan cara `a2ensite super.franky.E03.com.conf` dan lakukan `service apache2 restart`. Lalu lakukan `lynx www.super.franky.E03com` pada salah satu client.
+
+    ![image](https://user-images.githubusercontent.com/54606856/139534589-e20f3491-a2ae-4a92-8735-adacef2889ad.png)
+
+11. Akan tetapi, pada folder /public, Luffy ingin hanya dapat melakukan directory listing saja.
+    Edit file `super.franky.E03.com.conf` yang terletak di `/etc/apache2/sites-available` dengan menambahkan
 
 ```
-base
+      <Directory /var/www/super.franky.E03.com/public>
+              Options +Indexes
+      </Directory>
 ```
+
+    Lakukan `service apache2 restart`. Lalu buka `www.super.franky.E03.com` pada salah satu client.
+
+    ![image](https://user-images.githubusercontent.com/54606856/139535217-364d5cb8-2325-4d08-ae18-9e349145ea7e.png)
 
 12.Tidak hanya itu, Luffy juga menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache .
 
