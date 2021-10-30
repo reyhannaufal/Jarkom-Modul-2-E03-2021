@@ -75,13 +75,13 @@ iface eth0 inet static
 
 Pertama untuk konfigurasi di node EniesLobby sebagai berikut
   ```
-  zone "franky.e03.com" {
+  zone "franky.E03.com" {
         type master;
-        file "/etc/bind/kaizoku/franky.e03.com";
+        file "/etc/bind/kaizoku/franky.E03.com";
 };
   ```
   
-  lalu melakukan konfigurasi pada file `franky.e03.com` dengan konfigurasi sebagai berikut
+  lalu melakukan konfigurasi pada file `franky.E03.com` dengan konfigurasi sebagai berikut
   ![image](https://user-images.githubusercontent.com/73778173/139528843-099dbe03-6b71-4718-9128-173a865c01e2.png)
 
   Kemudian setting nameserver pada client mengarah ke EniesLobby
@@ -134,6 +134,8 @@ Pertama untuk konfigurasi di node EniesLobby sebagai berikut
   base
   ```
 14. Dan Luffy meminta untuk web www.general.mecha.franky.yyy.com hanya bisa diakses dengan port 15000 dan port 15500
+    
+    Buka file `ports.conf` dan gunakan settingan dibawah jika hanya dapat diakses menggunakan port 15000 dan 15500
   ```
   Listen 80
   Listen 15000
@@ -150,17 +152,35 @@ Pertama untuk konfigurasi di node EniesLobby sebagai berikut
 ![image](https://user-images.githubusercontent.com/59334824/139519281-9a87e428-6aea-4c7a-9fe3-90a279f9f2dc.png)
 
 15. dengan autentikasi username luffy dan password onepiece dan file di /var/www/general.mecha.franky.yyy
+    
+    Tambahkan konfigurasi `.htpasswd` di `/etc/apache2/` menggunakan config dibawah dengan format `username:password` dengan decrypt 
  ```
   luffy:$2y$10$mePXsiF4FlxFbLAXj7h1Bu2bJbOcuZhypOIQbA/ZEGspby6EznL0G
  ```
+    Setelah itu tambahkan konfigurai pada `mecha.franky.E03.com.conf` dengan config berikut supaya dapat mengattach `.htpasswd`
+ ```
+<Directory "var/www/general.mecha.franky.E03.com">
+	AuthType Basic
+	AuthName "Restricted Content"
+	AuthUserFile /etc/apache2/.htpasswd
+	Require valid-user
+</Directory>
+```
+
 ![image](https://user-images.githubusercontent.com/59334824/139519289-e21358b4-51a5-420b-ad9b-f9a8a0902d12.png)
 ![image](https://user-images.githubusercontent.com/59334824/139519300-98e37dfa-2d0d-4600-beb9-71f66678e872.png)
 
 16. Dan setiap kali mengakses IP Skypie akan dialihkan secara otomatis ke www.franky.yyy.com
+Tambahkan config sebagai berikut
+```
+Redirect / http://www.franky.E03.com/
+```
  ![messageImage_1635565295845](https://user-images.githubusercontent.com/59334824/139519256-5b255200-c716-43a5-816d-e9d6cda99d30.jpg)
  ![image](https://user-images.githubusercontent.com/59334824/139519263-0332a5c7-4dfd-4f2d-8daa-f34743e4e029.png)
 
 17. Dikarenakan Franky juga ingin mengajak temannya untuk dapat menghubunginya melalui website www.super.franky.yyy.com, dan dikarenakan pengunjung web server pasti akan bingung dengan randomnya images yang ada, maka Franky juga meminta untuk mengganti request gambar yang memiliki substring “franky” akan diarahkan menuju franky.png. Maka bantulah Luffy untuk membuat konfigurasi dns dan web server ini!
+
+Untuk setiap query image yang ada maka alihkan, url tersebut pada franky.png
   ```
   RewriteEngine On
   RewriteBase /var/www/super.franky.E03.com/public/images/
