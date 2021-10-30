@@ -105,9 +105,11 @@ Kemudian setting nameserver pada client mengarah ke EniesLobby
 3. Setelah itu buat subdomain super.franky.yyy.com dengan alias www.super.franky.yyy.com yang diatur DNS nya di EniesLobby dan mengarah ke Skypie
 
 Pertama lakukan konfigurasi di file `franky.e03.com`
+
 ![image](https://user-images.githubusercontent.com/73778173/139536488-0888df2e-dbbb-4132-b4b8-cee0ccf09685.png)
 
 setelah melakukan restart bind maka dilakukan ping dan akan didapatkan hasil sebagai berikut
+
 ![image](https://user-images.githubusercontent.com/73778173/139536564-0ea75e2f-31df-4827-b561-a8ca81e3c89c.png)
 
 
