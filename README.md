@@ -11,6 +11,7 @@ Daftar Kelompok:
 1. EniesLobby akan dijadikan sebagai DNS Master, Water7 akan dijadikan DNS Slave, dan Skypie akan digunakan sebagai Web Server. Terdapat 2 Client yaitu Loguetown, dan Alabasta. Semua node terhubung pada router Foosha, sehingga dapat mengakses internet
 
 	Dibuat topologi sebagai berikut
+	
 	![image](https://user-images.githubusercontent.com/73778173/139527903-a3fe9724-5f2c-4cb1-8823-059e861aa303.png)
 
 	dengan konfigurasi dari masing-masing node sebagai berikut
@@ -96,21 +97,25 @@ Daftar Kelompok:
 	};
 	```
 
-	lalu melakukan konfigurasi pada file `franky.E03.com` dengan konfigurasi sebagai berikut
+	Lalu melakukan konfigurasi pada file `franky.E03.com` dengan konfigurasi sebagai berikut
+	
 	![image](https://user-images.githubusercontent.com/73778173/139528843-099dbe03-6b71-4718-9128-173a865c01e2.png)
 
 	Kemudian setting nameserver pada client mengarah ke EniesLobby
+	
 	![image](https://user-images.githubusercontent.com/73778173/139528912-9cb3eaf1-1ee7-4a84-9a08-637499e7fd6b.png)
 
 3. Setelah itu buat subdomain super.franky.yyy.com dengan alias www.super.franky.yyy.com yang diatur DNS nya di EniesLobby dan mengarah ke Skypie
 
-	Pertama lakukan konfigurasi di file `franky.e03.com`
+	Pertama lakukan konfigurasi di file `franky.E03.com`
 
-	![image](https://user-images.githubusercontent.com/73778173/139536488-0888df2e-dbbb-4132-b4b8-cee0ccf09685.png)
+	![image](https://user-images.githubusercontent.com/59334824/139539320-970464de-6cae-4f90-89c4-e7886613e55e.png)
 
-	setelah melakukan restart bind maka dilakukan ping dan akan didapatkan hasil sebagai berikut
 
-	![image](https://user-images.githubusercontent.com/73778173/139536564-0ea75e2f-31df-4827-b561-a8ca81e3c89c.png)
+	Setelah melakukan restart bind maka dilakukan ping dan akan didapatkan hasil sebagai berikut
+
+	![image](https://user-images.githubusercontent.com/59334824/139539240-ab7f86a8-e323-40e7-9e48-0eb31e5a54fc.png)
+
 
 
 4. Buat juga reverse domain untuk domain utama
@@ -120,17 +125,23 @@ Daftar Kelompok:
 	zone "2.201.192.in-addr.arpa" {
 	    type master;
 	    file "/etc/bind/kaizoku/2.201.192.in-addr.arpa";
+	};
 	```
-	kemudian copykan `db.local` ke file `2.201.192.in-addr.arpa` lalu lakukan konfigurasi berikut
-	![image](https://user-images.githubusercontent.com/73778173/139536751-18b439e9-bcc4-4d68-8b3a-e1951458f130.png)
+	Kemudian copykan `db.local` ke file `2.201.192.in-addr.arpa` lalu lakukan konfigurasi berikut
+	
+	![image](https://user-images.githubusercontent.com/59334824/139539360-d4413d8c-53c7-41c9-be5c-9ce9fbd21ee3.png)
+	
+	Hasil dari reverse DNS
+	
+	![image](https://user-images.githubusercontent.com/59334824/139539770-5703d2c4-b3bc-42be-b08f-91aeead35222.png)
 
 
 
 5. Supaya tetap bisa menghubungi Franky jika server EniesLobby rusak, maka buat Water7 sebagai DNS Slave untuk domain utama
 
-	lakukan konfigurasi berikut di file `/etc/bind/named.conf.local` pada EniesLobby
+	Lakukan konfigurasi berikut di file `/etc/bind/named.conf.local` pada EniesLobby
 	```
-	zone "franky.e03.com" {
+	zone "franky.E03.com" {
 		type master;
 		notify yes;
 		also-notify { 192.201.2.3; };
@@ -138,57 +149,73 @@ Daftar Kelompok:
 		file "/etc/bind/kaizoku/franky.e03.com";
 	};
 	```
-	lalu lakukan konfigurasi berikut di file `/etc/bind/named.conf.local` pada Water7
+	Lalu lakukan konfigurasi berikut di file `/etc/bind/named.conf.local` pada Water7
 	```
-	zone "franky.e03.com" {
+	zone "franky.E03.com" {
 	    type slave;
 	    masters { 192.201.2.3; }; // Masukan IP EniesLobby tanpa tanda petik
 	    file "/var/lib/bind/franky.e03.com";
 	};
 	```
-	kemudian pada file `/etc/resolv.conf` arahkan ip ke Water7 dan EniesLobby seperti berikut
+	Kemudian pada file `/etc/resolv.conf` arahkan ip ke Water7 dan EniesLobby seperti berikut
 	![image](https://user-images.githubusercontent.com/73778173/139537183-bed5364a-0028-45f8-ab92-4a5dce142759.png)
 
 
 6. EniesLobby rusak, maka buat Water7 sebagai DNS Slave untuk domain utama (5). Setelah itu terdapat subdomain mecha.franky.yyy.com dengan alias www.mecha.franky.yyy.com yang didelegasikan dari EniesLobby ke Water7 dengan IP menuju ke Skypie dalam folder sunnygo
 
-	lakukan konfigurasi berikut pada file `/etc/bind/kaizoku/franky.e03.com` di EniesLobby
+	Lakukan konfigurasi berikut pada file `/etc/bind/kaizoku/franky.E03.com` di EniesLobby
+	
 	![image](https://user-images.githubusercontent.com/73778173/139537251-e03541a3-5717-410b-92dd-3ced25d76654.png)
 
-	kemudian lakukan konfigurasi berikut pada file `/etc/bind/named.conf.options` di EniesLobby dan Water7
+	Kemudian lakukan konfigurasi berikut pada file `/etc/bind/named.conf.options` di EniesLobby dan Water7
+	
 	![image](https://user-images.githubusercontent.com/73778173/139537404-b7dd03f7-c905-4fdd-ab55-44e6bffcc122.png)
 
-	lalu pada lakukan konfigurasi pada file `/etc/bind/named.conf.local` di EniesLobby
+	Lalu pada lakukan konfigurasi pada file `/etc/bind/named.conf.local` di EniesLobby
+	
 	![image](https://user-images.githubusercontent.com/73778173/139537481-8e3097c4-e2ea-4c55-8704-cd5cd7d0af49.png)
 
 	Lalu pada Water7 lakukan konfigurasi berikut pada `/etc/bind/named.conf.local`
+	
 	![image](https://user-images.githubusercontent.com/73778173/139537516-78d55a32-6089-4a96-951b-c44a887318ad.png)
 
-	lalu buat folder dan filenya dan kemudian lakukan konfigurasi seperti berikut pada file `mecha.franky.e03.com`
+	Lalu buat folder dan filenya dan kemudian lakukan konfigurasi seperti berikut pada file `mecha.franky.E03.com`
+	
 	![image](https://user-images.githubusercontent.com/73778173/139537572-82fafe8f-5cdc-413b-8eb7-9968709a89aa.png)
 
 
 
 7.  Untuk memperlancar komunikasi Luffy dan rekannya, dibuatkan subdomain melalui Water7 dengan nama general.mecha.franky.yyy.com dengan alias www.general.mecha.franky.yyy.com yang mengarah ke Skypie
 
-	Pertama lakukan konfigurasi berikut pada file `/etc/bind/sunnygo/mecha.franky.B09.com` di Water7
+	Pertama lakukan konfigurasi berikut pada file `/etc/bind/sunnygo/mecha.franky.E03.com` di Water7
+	
 	![image](https://user-images.githubusercontent.com/73778173/139537675-d4001f07-a59a-4d5c-8aee-999cb25edb36.png)
 
 	Lalu jika dilakukan ping pada Loguetown akan didapatkan hasil berikut
-	![image](https://user-images.githubusercontent.com/73778173/139537752-23ae38ef-9dd9-435e-bb35-6dc077a64346.png)
+	
+	![image](https://user-images.githubusercontent.com/59334824/139539546-8d2a702f-1bf3-44d3-bbf7-700d2973f93f.png)
 
 
 8. Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.franky.yyy.com. Pertama, luffy membutuhkan webserver dengan DocumentRoot pada /var/www/franky.yyy.com.
 
 	Pertama copy dari `/etc/apache2/sites-available/000-default.conf` ke file baru `/etc/apache2/sites-available/franky.e03.com` di skypie
 
-	Kemudian lakukan konfigurasi pada file `franky.e03.com` sebagai berikut
+	Kemudian lakukan konfigurasi pada file `franky.E03.com` sebagai berikut
 	
 	![image](https://user-images.githubusercontent.com/73778173/139538658-d5c1e8ef-e181-4a7d-8c6a-a28e877a42f6.png)
 
-	kemudian aktifkan konfigurasi franky.e03.com dengan `a2ensite franky.e03.com`, lalu restart apache
+	kemudian aktifkan konfigurasi franky.E03.com dengan `a2ensite franky.E03.com`, lalu restart apache
 
-	kemudian download file dari `https://github.com/FeinardSlim/Praktikum-Modul-2-Jarkom/raw/main/franky.zip` dan dimasukkan ke folder `/var/www` lalu unzip filenya dan 		rename folder yang sudah di unzip dari `franky` menjadi `franky.e03.com`
+	kemudian download file dari `https://github.com/FeinardSlim/Praktikum-Modul-2-Jarkom/raw/main/franky.zip` dan dimasukkan ke folder `/var/www` lalu unzip filenya dan 		rename folder yang sudah di unzip dari `franky` menjadi `franky.E03.com`
+	
+	Lalu lakukan pemeriksaan dengan melakukan lynx
+	```
+	lynx franky.E03.com
+	```
+	
+	Hasil ketika lynx mengugunakan client
+	![image](https://user-images.githubusercontent.com/59334824/139539644-ab6a222e-39d7-402d-ac63-f9d8fe9024d3.png)
+
 
 
 
