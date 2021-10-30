@@ -104,33 +104,77 @@ Kemudian setting nameserver pada client mengarah ke EniesLobby
 
 3. Setelah itu buat subdomain super.franky.yyy.com dengan alias www.super.franky.yyy.com yang diatur DNS nya di EniesLobby dan mengarah ke Skypie
 
-```
-base
-```
+Pertama lakukan konfigurasi di file `franky.e03.com`
+![image](https://user-images.githubusercontent.com/73778173/139536488-0888df2e-dbbb-4132-b4b8-cee0ccf09685.png)
+
+setelah melakukan restart bind maka dilakukan ping dan akan didapatkan hasil sebagai berikut
+![image](https://user-images.githubusercontent.com/73778173/139536564-0ea75e2f-31df-4827-b561-a8ca81e3c89c.png)
+
 
 4. Buat juga reverse domain untuk domain utama
 
+Tambahkan konfigurasi berikut pada `/etc/bind/named.conf.local`
 ```
-base
+zone "2.201.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/kaizoku/2.201.192.in-addr.arpa";
 ```
+kemudian copykan `db.local` ke file `2.201.192.in-addr.arpa` lalu lakukan konfigurasi berikut
+![image](https://user-images.githubusercontent.com/73778173/139536751-18b439e9-bcc4-4d68-8b3a-e1951458f130.png)
+
+
 
 5. Supaya tetap bisa menghubungi Franky jika server EniesLobby rusak, maka buat Water7 sebagai DNS Slave untuk domain utama
 
+lakukan konfigurasi berikut di file `/etc/bind/named.conf.local` pada EniesLobby
 ```
-base
+zone "franky.e03.com" {
+        type master;
+        notify yes;
+        also-notify { 192.201.2.3; };
+        allow-transfer { 192.201.2.3; };
+        file "/etc/bind/kaizoku/franky.e03.com";
+};
 ```
+lalu lakukan konfigurasi berikut di file `/etc/bind/named.conf.local` pada Water7
+```
+zone "franky.e03.com" {
+    type slave;
+    masters { 192.201.2.3; }; // Masukan IP EniesLobby tanpa tanda petik
+    file "/var/lib/bind/franky.e03.com";
+};
+```
+kemudian pada file `/etc/resolv.conf` arahkan ip ke Water7 dan EniesLobby seperti berikut
+![image](https://user-images.githubusercontent.com/73778173/139537183-bed5364a-0028-45f8-ab92-4a5dce142759.png)
+
 
 6. EniesLobby rusak, maka buat Water7 sebagai DNS Slave untuk domain utama (5). Setelah itu terdapat subdomain mecha.franky.yyy.com dengan alias www.mecha.franky.yyy.com yang didelegasikan dari EniesLobby ke Water7 dengan IP menuju ke Skypie dalam folder sunnygo
 
-```
- base
-```
+lakukan konfigurasi berikut pada file `/etc/bind/kaizoku/franky.e03.com` di EniesLobby
+![image](https://user-images.githubusercontent.com/73778173/139537251-e03541a3-5717-410b-92dd-3ced25d76654.png)
+
+kemudian lakukan konfigurasi berikut pada file `/etc/bind/named.conf.options` di EniesLobby dan Water7
+![image](https://user-images.githubusercontent.com/73778173/139537404-b7dd03f7-c905-4fdd-ab55-44e6bffcc122.png)
+
+lalu pada lakukan konfigurasi pada file `/etc/bind/named.conf.local` di EniesLobby
+![image](https://user-images.githubusercontent.com/73778173/139537481-8e3097c4-e2ea-4c55-8704-cd5cd7d0af49.png)
+
+Lalu pada Water7 lakukan konfigurasi berikut pada `/etc/bind/named.conf.local`
+![image](https://user-images.githubusercontent.com/73778173/139537516-78d55a32-6089-4a96-951b-c44a887318ad.png)
+
+lalu buat folder dan filenya dan kemudian lakukan konfigurasi seperti berikut pada file `mecha.franky.e03.com`
+![image](https://user-images.githubusercontent.com/73778173/139537572-82fafe8f-5cdc-413b-8eb7-9968709a89aa.png)
+
+
 
 7.  Untuk memperlancar komunikasi Luffy dan rekannya, dibuatkan subdomain melalui Water7 dengan nama general.mecha.franky.yyy.com dengan alias www.general.mecha.franky.yyy.com yang mengarah ke Skypie
 
-```
-base
-```
+Pertama lakukan konfigurasi berikut pada file `/etc/bind/sunnygo/mecha.franky.B09.com` di Water7
+![image](https://user-images.githubusercontent.com/73778173/139537675-d4001f07-a59a-4d5c-8aee-999cb25edb36.png)
+
+Lalu jika dilakukan ping pada Loguetown akan didapatkan hasil berikut
+![image](https://user-images.githubusercontent.com/73778173/139537752-23ae38ef-9dd9-435e-bb35-6dc077a64346.png)
+
 
 8. Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.franky.yyy.com. Pertama, luffy membutuhkan webserver dengan DocumentRoot pada /var/www/franky.yyy.com.
 
@@ -149,7 +193,6 @@ base
    ![image](https://user-images.githubusercontent.com/54606856/139532186-c7769f59-22a2-4703-a471-176d656aacf3.png)
 
 10. Setelah itu, pada subdomain www.super.franky.yyy.com, Luffy membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/super.franky.yyy.com
-
     Pertama masuk ke folder `/var/www`. Buat folder baru yaitu `super.franky.E03.com` yang berisikan hasil extract dari super.franky.zip yang sudah di git clone sebelumnya. Lalu buat file konfigurasi baru dengan cara melakukan copy pada file `000-default.conf` menjadi `super.franky.E03.com.conf` yang berisikan
 
 ```
@@ -159,12 +202,11 @@ base
       ServerAlias www.super.franky.E03.com
 ```
 
-Setelah itu aktifkan konfigurasi tersebut dengan cara `a2ensite super.franky.E03.com.conf` dan lakukan `service apache2 restart`. Lalu lakukan `lynx www.super.franky.E03com` pada salah satu client.
+    Setelah itu aktifkan konfigurasi tersebut dengan cara `a2ensite super.franky.E03.com.conf` dan lakukan `service apache2 restart`. Lalu lakukan `lynx www.super.franky.E03com` pada salah satu client.
 
-![image](https://user-images.githubusercontent.com/54606856/139534589-e20f3491-a2ae-4a92-8735-adacef2889ad.png)
+    ![image](https://user-images.githubusercontent.com/54606856/139534589-e20f3491-a2ae-4a92-8735-adacef2889ad.png)
 
 11. Akan tetapi, pada folder /public, Luffy ingin hanya dapat melakukan directory listing saja.
-
     Edit file `super.franky.E03.com.conf` yang terletak di `/etc/apache2/sites-available` dengan menambahkan
 
 ```
@@ -173,31 +215,21 @@ Setelah itu aktifkan konfigurasi tersebut dengan cara `a2ensite super.franky.E03
       </Directory>
 ```
 
-Lakukan `service apache2 restart`. Lalu buka `www.super.franky.E03.com` pada salah satu client.
+    Lakukan `service apache2 restart`. Lalu buka `www.super.franky.E03.com` pada salah satu client.
 
-![image](https://user-images.githubusercontent.com/54606856/139535217-364d5cb8-2325-4d08-ae18-9e349145ea7e.png)
+    ![image](https://user-images.githubusercontent.com/54606856/139535217-364d5cb8-2325-4d08-ae18-9e349145ea7e.png)
 
-12. Tidak hanya itu, Luffy juga menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache .
-
-    Edit file `super.franky.E03.com.conf` di folder `etc/apache2/sites-available` dengan menambahkan beberapa code seperti berikut
+12.Tidak hanya itu, Luffy juga menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache .
 
 ```
-      ErrorDocument 404 /error/404.html
+base
 ```
-
-Lakukan `service apache2 restart`. Lalu buka `www.super.franky.E03.com/c` pada salah satu client.
-![image](https://user-images.githubusercontent.com/54606856/139535623-df18afae-3bbc-4860-8be7-f3297d264f63.png)
 
 13. Luffy juga meminta Nami untuk dibuatkan konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset www.super.franky.yyy.com/public/js menjadi www.super.franky.yyy.com/js.
 
-    Edit file `super.franky.E03.com.conf` di folder `etc/apache2/sites-available` dengan menambahkan beberapa code seperti berikut
-
 ```
-    Alias "/js" "/var/www/super.franky.E03.com/public/js"
+base
 ```
-
-Lakukan `service apache2 restart`. Lalu buka `www.super.franky.E03.com/js` pada salah satu client.
-![image](https://user-images.githubusercontent.com/54606856/139536208-54bd9cf1-8320-4c3e-952f-93615848a15d.png)
 
 14. Dan Luffy meminta untuk web www.general.mecha.franky.yyy.com hanya bisa diakses dengan port 15000 dan port 15500
 
