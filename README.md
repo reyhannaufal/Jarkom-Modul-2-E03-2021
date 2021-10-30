@@ -269,15 +269,26 @@ Daftar Kelompok:
 
 12.Tidak hanya itu, Luffy juga menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache .
 
+    Edit file `super.franky.E03.com.conf` di folder `etc/apache2/sites-available` dengan menambahkan beberapa code seperti berikut
+
 ```
-base
+      ErrorDocument 404 /error/404.html
 ```
+Lakukan `service apache2 restart`. Lalu buka `www.super.franky.E03.com/c` pada salah satu client.
+
+![image](https://user-images.githubusercontent.com/54606856/139535623-df18afae-3bbc-4860-8be7-f3297d264f63.png)
 
 13. Luffy juga meminta Nami untuk dibuatkan konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset www.super.franky.yyy.com/public/js menjadi www.super.franky.yyy.com/js.
 
+    Edit file `super.franky.E03.com.conf` di folder `etc/apache2/sites-available` dengan menambahkan beberapa code seperti berikut
+
 ```
-base
+    Alias "/js" "/var/www/super.franky.E03.com/public/js"
 ```
+
+Lakukan `service apache2 restart`. Lalu buka `www.super.franky.E03.com/js` pada salah satu client.
+
+![image](https://user-images.githubusercontent.com/54606856/139536208-54bd9cf1-8320-4c3e-952f-93615848a15d.png)
 
 14. Dan Luffy meminta untuk web www.general.mecha.franky.yyy.com hanya bisa diakses dengan port 15000 dan port 15500
 
